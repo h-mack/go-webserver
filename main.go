@@ -1,24 +1,23 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 )
 
 func main() {
+	const port = "8080"
+
 	mux := http.NewServeMux()
 	corsMux := middlewareCors(mux)
 
 	server := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + port,
 		Handler: corsMux,
 	}
 
-	fmt.Println("Server started on https://localhost:8080")
-	err := server.ListenAndServe()
-	if err != nil {
-		fmt.Println("Error starting server:", err)
-	}
+	log.Printf("Server started on https://localhost:%s", port)
+	log.Fatal(server.ListenAndServe())
 }
 
 func middlewareCors(next http.Handler) http.Handler {
